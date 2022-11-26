@@ -14,15 +14,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Страницы
-
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('AboutUs');
 
 
-//Функции
+//регистрация
+Route::get('/registration', [\App\Http\Controllers\PageController::class, 'RegPage'])->name('RegPage');
+Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 'registration'])->name('registration');
+
+//авторизация
+Route::get('/authorization',[\App\Http\Controllers\PageController::class, 'AuthPage'])->name('AuthPage');
+Route::post('/authorization', [\App\Http\Controllers\UserController::class, 'auth'])->name('auth');
+
+Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->name('logout');
+
+
 
 Route::group(['middleware'=>['auth', 'admin'],'prefix'=>'admin'], function (){
 
+    Route::get('/panel', [\App\Http\Controllers\PageController::class, 'AdminPage'])->name('AdminPage');
 
 });
